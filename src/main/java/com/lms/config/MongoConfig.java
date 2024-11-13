@@ -22,7 +22,7 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
 
     @Override
     protected String getDatabaseName() {
-        return "OneBusiness";
+        return "LemonadeStand";
     }
 
     @Override
@@ -37,6 +37,6 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
 
     @Override
     public Collection getMappingBasePackages() {
-        return Collections.singleton("com.aq.onebusiness");
+        return Collections.singleton("com.lms");
     }
 }
