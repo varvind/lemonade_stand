@@ -5,5 +5,6 @@ import com.lms.model.User;
 
 public interface UserRepository extends MongoRepository<User, String>  {
 
+    boolean existsUserByEmail(String email);
 }
 
