@@ -2,8 +2,14 @@ package com.lms.service;
 
 import com.lms.model.User;
 import com.lms.repository.UserRepository;
+import com.lms.security.CustomAuthenticationProvider;
+import com.lms.security.model.AuthenticationRequest;
+import com.lms.security.util.JWTUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Objects;
@@ -13,6 +19,12 @@ public class UserService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    CustomAuthenticationProvider customAuthenticationProvider;
+
+    @Autowired
+    JWTUtil jwtUtil;
 
     @Autowired
     BCryptPasswordEncoder bcryptPassEnc;
@@ -58,4 +70,41 @@ public class UserService {
             return new User();
         }
     }
+
+
+    public String getLoggedInUser() {
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String currentUserName = authentication.getName();
+            if (currentUserName == "anonymousUser") {
+                log.warn("No User is Logged In");
+                return "";
+            }
+            log.info(String.format("User In Current Context: %s", currentUserName));
+            return currentUserName;
+        } catch (Exception e) {
+            log.error("Exception thrown When Looking in Security Context");
+            return "";
+        }
+    }
+
+
+    public String refreshSecurityContext(Authentication tok) {
+        try {
+            Authentication token = customAuthenticationProvider.authenticate(tok);
+            SecurityContextHolder.getContext().setAuthentication(token);
+            log.info("Successfully Updated the Security Context");
+
+            return jwtUtil.generateToken(token.getName());
+        } catch (BadCredentialsException e) {
+            SecurityContextHolder.clearContext();
+            log.error("Caught Exception When Authenticating Security Token:\n" + e.getMessage());
+            throw e;
+        } catch (Exception e) {
+            SecurityContextHolder.clearContext();
+            log.error("Caught Exception When Generating New JWT:\n" + e.getMessage());
+        }
+        return "";
+    }
+
 }

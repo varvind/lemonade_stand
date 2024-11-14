@@ -1,7 +1,9 @@
 package com.lms.config;
 
+import com.lms.security.CustomAuthenticationProvider;
 import com.lms.security.JwtAuthenticationFilter;
 import com.lms.security.util.JWTUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +16,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+@Slf4j
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     JWTUtil jwtUtil;
@@ -45,5 +48,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public CustomAuthenticationProvider customAuthenticationProvider() {
+        log.info("Custom Authentication Provider Initialized");
+        return new CustomAuthenticationProvider();
     }
 }
