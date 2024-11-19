@@ -1,5 +1,6 @@
 package com.lms.service.util;
 
+import com.lms.model.Source;
 import com.lms.model.User;
 import com.lms.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +38,29 @@ public class ValidatorUtil {
             errorMessage = "Invalid or missing tokens: "
                     + errorMessage.substring(0, errorMessage.length() - 2) + ".";
         }
+        return errorMessage;
+    }
+
+    public String validateSource(Source source) {
+        log.info("Verifying Valid Source Information:\n" + source.toString());
+
+        String errorMessage = "";
+
+        if (source.getAmount() <= 0) {
+            errorMessage += "amount (must be greater than 0), ";
+        }
+        if (source.getName() == null || source.getName().trim().isEmpty()) {
+            errorMessage += "name (cannot be empty), ";
+        }
+        if (source.getType() == null) {
+            errorMessage += "type (cannot be null), ";
+        }
+
+        if (!errorMessage.isEmpty()) {
+            errorMessage = "Invalid or missing fields: "
+                    + errorMessage.substring(0, errorMessage.length() - 2) + ".";
+        }
+
         return errorMessage;
     }
 }

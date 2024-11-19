@@ -3,6 +3,7 @@ package com.lms.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Document(collection = "user")
@@ -16,21 +17,21 @@ public class User {
     private String email;
     private String password;
     private List<Networth> networthData;
-    private String currentNetworth;
+    private Networth currentNetworth;
 
     // Default constructor with all fields initialized to null
     public User() {
-        this.id = null;
-        this.firstName = null;
-        this.lastName = null;
-        this.email = null;
-        this.password = null;
-        this.networthData = null;
+        this.id = "";
+        this.firstName = "";
+        this.lastName = "";
+        this.email = "";
+        this.password = "";
+        this.networthData = new ArrayList<>();
         this.currentNetworth = null;
     }
 
     // Parameterized constructor
-    public User(String id, String firstName, String lastName, String email, String password, List<Networth> networthData, String currentNetworth) {
+    public User(String id, String firstName, String lastName, String email, String password, List<Networth> networthData, Networth currentNetworth) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -89,12 +90,16 @@ public class User {
         this.networthData = networthData;
     }
 
-    public String getCurrentNetworth() {
+    public Networth getCurrentNetworth() {
         return currentNetworth;
     }
 
-    public void setCurrentNetworth(String currentNetworth) {
+    public void setCurrentNetworth(Networth currentNetworth) {
         this.currentNetworth = currentNetworth;
+    }
+
+    public void addNetworth(Networth networth) {
+        networthData.add(networth);
     }
 
     @Override

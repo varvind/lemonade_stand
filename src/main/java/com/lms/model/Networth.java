@@ -11,28 +11,25 @@ public class Networth {
 
     @Id
     private String id;
-    private int month;
-    private int year;
+    private Date date_created;
     private Date last_updated;
-    private int current_amount;
+    private double current_amount;
     private List<Source> sources;
 
     // Default constructor with all fields initialized to null
     public Networth() {
         this.id = null;
-        this.month = 0;
-        this.year = 0;
-        this.last_updated = null;
+        this.date_created = new Date();
+        this.last_updated = new Date();
         this.current_amount = 0;
         this.sources = null;
     }
 
     // Parameterized constructor
-    public Networth(String id, int month, int year, Date last_updated, int current_amount, List<Source> sources) {
+    public Networth(String id, int current_amount, List<Source> sources) {
         this.id = id;
-        this.month = month;
-        this.year = year;
-        this.last_updated = last_updated;
+        this.date_created = new Date();
+        this.last_updated = new Date();
         this.current_amount = current_amount;
         this.sources = sources;
     }
@@ -46,20 +43,12 @@ public class Networth {
         this.id = id;
     }
 
-    public int getMonth() {
-        return month;
+    public Date getDate_created() {
+        return date_created;
     }
 
-    public void setMonth(int month) {
-        this.month = month;
-    }
-
-    public int getYear() {
-        return year;
-    }
-
-    public void setYear(int year) {
-        this.year = year;
+    public void setDate_created(Date date_created) {
+        this.date_created = date_created;
     }
 
     public Date getLast_updated() {
@@ -70,11 +59,11 @@ public class Networth {
         this.last_updated = last_updated;
     }
 
-    public int getCurrent_amount() {
+    public double getCurrent_amount() {
         return current_amount;
     }
 
-    public void setCurrent_amount(int current_amount) {
+    public void setCurrent_amount(double current_amount) {
         this.current_amount = current_amount;
     }
 
@@ -87,6 +76,10 @@ public class Networth {
     }
 
     public void addSource(Source source) {
+        current_amount += source.getAmount();
+        last_updated = new Date();
         sources.add(source);
     }
+
+
 }
