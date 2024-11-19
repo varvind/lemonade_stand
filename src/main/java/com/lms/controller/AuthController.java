@@ -5,6 +5,7 @@ import com.lms.security.model.AuthenticationRequest;
 import com.lms.security.model.AuthenticationResponse;
 import com.lms.security.util.JWTUtil;
 import com.lms.service.UserService;
+import com.lms.service.util.ValidatorUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,6 +29,9 @@ public class AuthController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    ValidatorUtil validatorUtil;
 
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> login(@RequestBody AuthenticationRequest authenticationRequest) {
@@ -74,7 +78,7 @@ public class AuthController {
         log.info("Attempting to request POST '/create/user'");
         Map<String, String> returnJson = new HashMap<>();
 
-        String verifyUserMessage = userService.verifyUser(reqUser);
+        String verifyUserMessage = validatorUtil.verifyUser(reqUser);
         if (!Objects.equals(verifyUserMessage, "")) {
             log.error("Error in user request, returning 'Bad Request'");
             returnJson.put("error", verifyUserMessage);

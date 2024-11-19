@@ -2,6 +2,7 @@ package com.lms.config;
 
 import com.lms.service.LemonadeStandService;
 import com.lms.service.UserService;
+import com.lms.service.util.ValidatorUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,5 +19,10 @@ public class ApplicationConfig {
     @Bean
     public LemonadeStandService getLemonadeStandService() {
         return new LemonadeStandService();
+    }
+
+    @Bean
+    public ValidatorUtil validatorUtil() {
+        return new ValidatorUtil();
     }
 }

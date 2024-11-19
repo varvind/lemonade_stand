@@ -85,4 +85,8 @@ public class Networth {
     public void setSources(List<Source> sources) {
         this.sources = sources;
     }
+
+    public void addSource(Source source) {
+        sources.add(source);
+    }
 }
