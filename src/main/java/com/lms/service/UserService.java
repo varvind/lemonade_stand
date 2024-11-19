@@ -76,7 +76,7 @@ public class UserService {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String currentUserName = authentication.getName();
-            if (currentUserName == "anonymousUser") {
+            if (currentUserName.equals("anonymousUser")) {
                 log.warn("No User is Logged In");
                 return "";
             }
@@ -105,6 +105,17 @@ public class UserService {
             log.error("Caught Exception When Generating New JWT:\n" + e.getMessage());
         }
         return "";
+    }
+
+
+    public User getUser() {
+        String email = getLoggedInUser();
+        User user;
+        if (email != null && !email.isEmpty()) {
+            return userRepository.findByEmail(email);
+        } else {
+            return null;
+        }
     }
 
 }
